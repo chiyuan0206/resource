@@ -1,0 +1,895 @@
+HW1-1
+namespace HW1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            double food = 0, cloth = 0, live = 0, travel = 0, play = 0,pre=0;
+             const string  topic= "(1)輸入收入 (2)輸入支出 (3)計算比例 (4)剩餘金額 (5)退出程式";
+            int  input, total = 0, money = 0,choice;
+            Console.WriteLine(topic);
+            Console.Write("輸入數字選擇功能: ");
+            input = int.Parse(Console.ReadLine());
+            while (input != 5)
+            {
+                if (input == 1)
+                {
+                    Console.Write("輸入金額: ");
+                    money = int.Parse(Console.ReadLine());
+                    total = total + money;
+                }
+                else if (input == 2)
+                {
+                    Console.WriteLine("(1)食 (2)衣 (3)住 (4)行 (5)育樂");
+                    Console.Write("輸入數字選擇支出項目: ");
+                    choice = int.Parse(Console.ReadLine());
+                    Console.Write("輸入支出金額: ");
+                    money = int.Parse(Console.ReadLine());
+                    total = total - money;
+                    if (choice == 1) { food += money; }
+                    else if (choice == 2) { cloth += money; }
+                    else if (choice == 3) { live += money; }
+                    else if (choice == 4) { travel += money; }
+                    else { play += money; }
+                }
+                else if (input == 3)
+                {
+                    if ((food + cloth + live + travel + play) != 0)
+                    {
+                        pre = food / (food + cloth + live + travel + play) * 100;
+                        Console.WriteLine("食: {0}%", pre);
+                        pre = cloth / (food + cloth + live + travel + play) * 100;
+                        Console.WriteLine("衣: {0}%", pre);
+                        pre = live / (food + cloth + live + travel + play) * 100;
+                        Console.WriteLine("住: {0}%", pre);
+                        pre = travel / (food + cloth + live + travel + play) * 100;
+                        Console.WriteLine("行: {0}%", pre);
+                        pre = play / (food + cloth + live + travel + play) * 100;
+                        Console.WriteLine("育樂: {0}%", pre);
+                    }
+                    else
+                    {
+                        Console.WriteLine("食: 0%");
+                        Console.WriteLine("衣: 0%");
+                        Console.WriteLine("住: 0%");
+                        Console.WriteLine("行: 0%");
+                        Console.WriteLine("育樂: 0%\n");
+                    }
+                }
+                else if (input == 4)
+                {
+                    Console.WriteLine("剩餘金額為: {0}\n", total);
+                }
+                else if (input == 5) { Console.Read(); }
+                else { }// keep write;}
+                Console.WriteLine("\n{0}", topic);
+                Console.Write("輸入數字選擇功能: ");
+                input = int.Parse(Console.ReadLine());
+            }
+        }
+    }
+}
+
+ch1-2
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+
+namespace HW1
+{
+    public struct Outcome
+    {
+        public string name;
+        public long cost;
+    }
+    class Program
+    {
+
+        static void Main(string[] args)
+
+       {
+            double sum = 0, pre = 0;
+            Outcome[] array = new Outcome[5];
+            for (int i = 0; i < 5; i++) { array[i].cost = 0; array[i].name = null; }
+            const string topic = "(1)輸入收入 (2)輸入支出 (3)新增項目 (4)刪除項目 (5)計算比例 (6)查詢支出 (7)剩餘金額 (8)退出程式";
+            long input, total = 0, money = 0, choice,sumcost=0;
+
+            while (true)
+            {
+                Console.WriteLine(topic);
+                Console.Write("輸入數字選擇功能: ");
+                input = long.Parse(Console.ReadLine());
+                if (input == 1)
+                {
+                    Console.Write("輸入金額: ");
+                    try
+                    {
+                        money = long.Parse(Console.ReadLine());
+                    }
+                    catch (System.FormatException ex)
+                    {
+                        Console.WriteLine("請輸入數字\n ");
+                        continue;
+                    }
+                    if (money < 0)
+                    {
+                        Console.WriteLine("收入不可為負數 \n"); continue;
+                    }
+                    Console.Write("\n");
+                    total = total + money;
+                }
+                else if (input == 2 && array[0].name == null) { Console.WriteLine("請新增支出項目 \n"); continue; }
+                else if (input == 2)
+                {
+                    int reme = 0,s=0;
+                    for(int i = 0; i < 5; i++)
+                    { if (array[i].name == null) { reme = i-1; s = i-1; break; }
+                        Console.Write("({0}){1} ", i+1, array[i].name);
+                        s = i;
+                    }
+                    Console.Write("\n輸入數字選擇支出項目: ");
+                    choice = int.Parse(Console.ReadLine());
+                    if (choice -1 >reme || choice-1  < 0) {Console.WriteLine("此數字不在範圍中\n"); continue; }
+                    else {
+                        Console.Write("輸入支出金額: ");
+                        money = long.Parse(Console.ReadLine());
+                        sumcost += money;
+                        array[s].cost += money;
+                        total -= money;
+                        if (money > total) { Console.WriteLine("餘額不足\n "); continue; }
+                        
+                        Console.Write("\n");
+                    }
+                }
+                else if (input == 3)
+                {
+                    Console.Write("輸入項目名稱: ");
+                    string increase;
+                    increase = Console.ReadLine();
+                    for (int i = 0; i < 5; i++)
+                    {
+                        if (array[i].name == increase) { Console.WriteLine("支出項目已存在 \n"); break; }
+                        else if (array[i ].name == null) { array[i ].name = increase; Console.Write("\n"); break; }
+                        else if (array[4].name != null) { Console.WriteLine("已無法再新增支出項目 \n"); break; }
+                    }
+                }
+                else if (input == 4 && array[0].name == null) { Console.WriteLine("已無法再刪除支出項目 \n"); continue; }
+                else if (input == 4)
+                {
+                    string delete,temp;
+                    long tempcost;
+                    Console.Write("輸入項目名稱: ");
+                    delete = Console.ReadLine();
+                    for (int i = 0; i < 5; i++)
+                    {
+                        if (delete == array[i].name) { array[i].name = null; array[i].cost = 0;
+                            for(int j = 1; j +i< 5; ) {
+                                array[i].name = array[j+i].name; array[i].cost= array[j+i].cost;
+                                array[j + i].name = null; array[j + i].cost = 0;
+                                i++;
+                             }
+                            continue; }
+                        else if (i == 4 && delete != array[4].name) { Console.WriteLine("此項目不存在");
+                            break; }
+                    }
+                    Console.Write("\n");
+                }
+                else if (input == 5)
+                {
+                   for(int i = 0; i < 5; i++) { sum += array[i].cost; }
+                   for(int i = 0; i < 5; i++)
+                    {
+                        pre = array[i].cost / sum * 100;
+                        if (array[i].name == null) { break; }
+                        Console.WriteLine("({0}){1}: {2}%", i+1, array[i].name, pre);
+                    }
+                    Console.WriteLine("\n");
+                }
+                else if (input == 6)
+                {
+                    string inquire;
+                    Console.WriteLine("目前總支出: {0} ", sumcost);
+                    Console.Write("輸入要查詢的項目: ");
+                    inquire = Console.ReadLine();
+                    for (int i = 0; i < 5; i++)
+                    {
+                        if (inquire == array[i].name) { Console.WriteLine("{0}: {1}\n", array[i].name, array[i].cost);break; }
+                        else if (inquire != array[i].name && i == 4) { Console.WriteLine("此項目不存在 \n"); break; }
+                    }
+                }
+                else if (input == 7)
+                {
+                    Console.WriteLine("剩餘金額為: {0}\n", total);
+                }
+                else if (input == 8) { return; }
+                else { Console.Write("\n"); }// keep write;}
+            }
+             Console.Read();
+        }
+    }
+}
+
+2-1
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HW2_1
+{
+    public struct Lesson
+    {
+        public string name;
+        public int day;
+        public int start;
+        public int end;
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string topic = "(1)新增課程 (2)刪除課程 (3)列印課表 (4)計算學分 (5)離開程式";
+            int choice = 0, tempday, tempstart, tempend;
+            Lesson[] lesson = new Lesson[56];
+            for (int i = 0; i < 56; i++) { lesson[i].name = null; }
+            string[,] schedule = new string[8, 7];
+            string temp, tempname;
+            while (true)
+            {
+                Console.WriteLine($"{topic}");
+                Console.Write("請輸入數字選擇功能: ");
+                choice = int.Parse(Console.ReadLine());
+                if (choice == 1)
+                {
+                    Console.WriteLine("請輸入要加入的課程，格式為<課程代號 星期 開始節 結束節>");
+                    temp = Console.ReadLine();
+                    tempname = temp.Substring(0, 5);
+                    tempday = int.Parse(temp.Substring(6, 1));
+                    tempstart = int.Parse(temp.Substring(8, 1));
+                    tempend = int.Parse(temp.Substring(10, 1));
+                    for (int i = 0; i < 56; i++)
+                    {
+                        if (tempname == lesson[i].name) { Console.WriteLine("課程重複!\n"); break; }
+                        else if (tempday == lesson[i].day&&tempend <= lesson[i].end &&tempstart>=lesson[i].start)   
+                        { Console.WriteLine("課程衝堂!\n"); break; }
+                        else if(tempday==lesson[i].day&&tempstart<=lesson[i].start&&tempend<=lesson[i].end&& tempend >= lesson[i].start) { Console.WriteLine("課程衝堂!\n"); break; }
+                        else if(tempday==lesson[i].day&&tempstart>=lesson[i].start&& tempstart <= lesson[i].end&&tempend >= lesson[i].end) { Console.WriteLine("課程衝堂!\n"); break; }
+                        else if (lesson[i].name == null)
+                        {
+                            lesson[i].name = temp.Substring(0, 5);
+                            lesson[i].day = int.Parse(temp.Substring(6, 1));
+                            lesson[i].start = int.Parse(temp.Substring(8, 1));
+                            lesson[i].end = int.Parse(temp.Substring(10, 1));
+                            Console.WriteLine("成功加入課程!\n");
+                            break;
+                        }
+                        else { continue; }
+                    }
+                }
+                else if (choice == 2)
+                {
+                    Console.Write("請輸入要刪除的課程代號: ");
+                    string delete = Console.ReadLine();
+                   
+                    for (int i = 0; i < 56; i++)
+                    {
+                        if (delete == lesson[i].name)
+                        {
+                            for (int j = 0; j < 56; j++)
+                            {
+                                if (lesson[j].name == null) { break; }
+                                {
+                                    lesson[j].name = lesson[j + 1].name;
+                                    lesson[j].day = lesson[j + 1].day;
+                                    lesson[j].start = lesson[j + 1].start;
+                                    lesson[j].end = lesson[j + 1].end;
+                                }
+                            }
+                            Console.WriteLine($"成功刪除課程: {delete} \n");
+                            break;
+                        }
+                        else if (i == 55) { Console.WriteLine($"課程 {delete} 不在課表中\n"); }
+                    }
+                }
+                else if (choice == 3)
+                {
+                    for (int i = 0; lesson[i].name != null; i++)
+                    {
+                        for (int j = lesson[i].start - 1; j < lesson[i].end; j++)
+                        {
+                            schedule[j, lesson[i].day - 1] = lesson[i].name;
+                        }
+                    }
+                    Console.Write(String.Format("{0,-6}", ""));
+                    Console.Write(String.Format("{0,-6}", "Sun"));
+                    Console.Write(String.Format("{0,-6}", "Mon"));
+                    Console.Write(String.Format("{0,-6}", "Tue"));
+                    Console.Write(String.Format("{0,-6}", "Wed"));
+                    Console.Write(String.Format("{0,-6}", "Thu"));
+                    Console.Write(String.Format("{0,-6}", "Fri"));
+                    Console.WriteLine(String.Format("{0,-6}", "Sat"));
+                    for(int i = 0; i < 8; i++)
+                    { Console.Write(String.Format("{0,-6}",i+1));
+                        Console.Write(String.Format("{0,-6}", schedule[i, 6]));
+                        for(int j = 0; j < 6; j++)
+                        {if (j == 5) { Console.WriteLine(String.Format("{0,-6}", schedule[i, j])); break; }
+                            else { Console.Write(String.Format("{0,-6}", schedule[i, j])); }
+                        }
+                    }
+Console.Write("\n");
+                }
+                else if (choice == 4)
+                {
+                    int score = 0;
+                    for (int i = 0; i < 56; i++)
+                    {
+                        if (lesson[i].name != null) score=score+(lesson[i].end-lesson[i].start+1);
+                        else { Console.WriteLine("{0}\n", score); break; }
+                    }
+                }
+                else { return; }
+            }
+
+
+            Console.Read();
+        }
+    }
+}
+
+2-2 棋盤格
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Hw2_2
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int n = 63, circle = 0, fork = 0, column = 0, row = 0;
+            char[,] array = new char[8, 8];
+
+            string tempcolumn;
+            for (int i = 0; i < 8; i++) { for (int j = 0; j < 8; j++) { array[i, j] = '-'; } }
+            while (n > 0)
+            {
+                Console.Clear();
+                Console.WriteLine("  A B C D E F G H");
+                for (int i = 0; i < 8; i++)
+                {
+                    Console.Write("{0} ", i + 1);
+                    for (int j = 0; j < 8; j++)
+                    {
+                        if (j != 7) { Console.Write(String.Format("{0,-2}", array[i, j])); }
+                        else { Console.WriteLine(String.Format("{0,-2}", array[i, j])); }
+                    }
+                }
+                if (n % 2 != 0)
+                { Console.WriteLine("輪到玩家O 請輸入要下的位子:"); }
+                else { Console.WriteLine("輪到玩家X 請輸入要下的位置:"); }
+                tempcolumn = Console.ReadLine();
+                row = int.Parse(tempcolumn.Substring(1)) - 1;
+                tempcolumn = tempcolumn.Remove(1);
+                switch (tempcolumn)
+                {
+                    case "A": column = 0; break;
+                    case "B": column = 1; break;
+                    case "C": column = 2; break;
+                    case "D": column = 3; break;
+                    case "E": column = 4; break;
+                    case "F": column = 5; break;
+                    case "G": column = 6; break;
+                    case "H": column = 7; break;
+                    default: break; 
+                }
+                if (array[row, column] == '-' && n % 2 != 0) { array[row, column] = 'O'; n--; circle++; }
+                else if (array[row, column] == '-' && n % 2 == 0) { array[row, column] = 'X'; n--; fork++; }
+                else
+                {
+                    Console.WriteLine("此位置已有棋子! 按任意鍵進行遊戲");
+                    Console.ReadLine();
+                    continue;
+                }
+                if (array[row, column] == 'O')
+                {
+                    for (int i = 0; i < row; i++)
+                    {
+                        if (array[i, column] == 'O')
+                        {
+                            for (int j = i; j < row; j++)
+                            {
+                                if (array[j, column] == 'X') { array[j, column] = 'O'; circle++; }
+                            }
+                        }
+                    }
+                    for (int i = 7; i > row; i--)
+                    {
+                        if (array[i, column] == 'O')
+                        {
+                            for (int j = i; j > row; j--)
+                            {
+                                if (array[j, column] == 'X') { array[j, column] = 'O'; circle++; }
+                            }
+                        }
+                    }
+                    for (int i = 0; i < column; i++)
+                    {
+                        if (array[row, i] == 'O')
+                        {
+                            for (int j = i; j < column; j++)
+                            {
+                                if (array[row, j] == 'X') { array[row, j] = 'O'; circle++; }
+                            }
+                        }
+                    }
+                    for (int i = 7; i > column; i--)
+                    {
+                        if (array[row, i] == 'O')
+                        {
+                            for (int j = i; j > column; j--)
+                            {
+                                if (array[row, j] == 'X') { array[row, j] = 'O'; 
+                                circle++;}
+                            }
+                        }
+                    }
+                }
+                if (array[row, column] == 'X')
+                {
+                    for (int i = 0; i < row; i++)
+                    {
+                        if (array[i, column] == 'X')
+                        {
+                            for (int j = i; j < row; j++)
+                            {
+                                if (array[j, column] == 'O') { array[j, column] = 'X'; fork++; }
+                            }
+                        }
+                    }
+                    for (int i = 7; i > row; i--)
+                    {
+                        if (array[i, column] == 'X')
+                        {
+                            for (int j = i; j > row; j--)
+                            {
+                                if (array[j, column] == 'O') { array[j, column] = 'X'; fork++; }
+                            }
+                        }
+                    }
+                    for (int i = 0; i < column; i++)
+                    {
+                        if (array[row, i] == 'X')
+                        {
+                            for (int j = i; j < column; j++)
+                            {
+                                if (array[row, j] == 'O') { array[row, j] = 'X'; fork++; }
+                            }
+                        }
+                    }
+                    for (int i = 7; i > column; i--)
+                    {
+                        if (array[row, i] == 'X')
+                        {
+                            for (int j = i; j > column; j--)
+                            {
+                                if (array[row, j] == 'O') { array[row, j] = 'X'; fork++; }
+                            }
+                        }
+                    }
+                }
+                
+            }if (circle > fork) { Console.WriteLine("遊戲結束 玩家O獲勝!"); }
+                else  { Console.WriteLine("遊戲結束 玩家X獲勝!"); }
+               
+            Console.ReadLine();
+        }
+    }
+}
+hw3-1
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace WindowsFormsApp1
+{
+   
+    public partial class Form1 : Form
+    {
+         List<Account> account = new List<Account>();
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void Form1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+
+        }
+
+       
+
+        
+        private void button1_MouseClick(object sender, MouseEventArgs e) //搜尋
+        {
+            if (textBox1.Text == null) { 
+            foreach (var acc in account)
+                {
+                    Console.WriteLine("連結:{0}", acc.link);
+                    Console.WriteLine("使用者:{0}", acc.user);
+                    Console.WriteLine("密碼:{0}", acc.pass);
+                    Console.WriteLine("==========================");
+                }
+        }
+            else
+            {
+                foreach(var acc in account)
+                {
+                    if (  acc.link.Contains("textBox1.Text"))
+                    {
+                        Console.WriteLine("連結:{0}", acc.link);
+                        Console.WriteLine("使用者:{0}", acc.user);
+                        Console.WriteLine("密碼:{0}", acc.pass);
+                        Console.WriteLine("==========================");
+                    }
+                }
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e) //風險帳號
+        {
+            for(int i = 0; i < account.Count; i++)
+            {
+                int printrisk = 0;
+                for (int j =i+ 1; j < account.Count; j++)
+                {
+                    if (account[i].pass == account[j].pass)
+                    {
+                        Console.WriteLine("連結:{0}", account[j].link);
+                        Console.WriteLine("使用者:{0}", account[j].user);
+                        Console.WriteLine("密碼:{0}", account[j].pass);
+                        Console.WriteLine("==========================");
+                    }
+                    else if(account[i].pass == account[j].pass && printrisk == 0)
+                    {
+                        Console.WriteLine("連結:{0}", account[i].link);
+                        Console.WriteLine("使用者:{0}", account[i].user);
+                        Console.WriteLine("密碼:{0}", account[i].pass);
+                        Console.WriteLine("==========================");
+                        printrisk++;
+                    }
+                }
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e) //切換
+        {
+            this.Hide();
+            Form2 subform = new Form2();
+            subform.ShowDialog();
+            this.Close();
+        }
+    }
+    class Account
+    {
+        public string link, user, pass;
+
+        public Account(string _link, string _user, string _pass)
+        {
+            link = _link;
+            user = _user;
+            pass = _pass;
+        }
+    }
+}
+
+hw4-1
+肏你媽
+image是object不能比較 random分配用for迴圈會死掉
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace _4_1
+{
+    public partial class Form1 : Form
+    {
+
+        public Form1()
+        {
+            InitializeComponent();
+
+        }
+        int num = 0, isBothSame = 0, t1 = 0, t2 = 0,first=0,canttry=0;
+        public Button[] btns = new Button[16];
+        Image[] pic = new Image[16]; //已打亂的圖片array
+        public int[] press = new int[16];
+        String a = "";//messagebox標題
+        string[] str = new string[16];
+        string[] compare = new string[16];
+
+        private void start_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < 16; i++) { compare[i] = ""; }
+            start.Enabled = false;
+            keep.Enabled = false;
+            pic = RandomProduce();
+            for (int y = 0; y < 4; ++y)
+            {
+                for (int x = 0; x < 4; ++x)
+                {
+                    int idx = x + y * 4;
+                    btns[idx] = new Button();
+                    btns[idx].Image = Image.FromFile(@"images\card.jpg");
+                    btns[idx].SetBounds(y * 50, x * 10, 75, 100);
+                    btns[idx].Enabled = true;
+                    btns[idx].Font = new Font("標楷體", 1);
+                    btns[idx].Text = idx.ToString();
+                    flowLayoutPanel1.Controls.Add(btns[idx]);
+                    btns[idx].Click += btn_Click;
+                }
+            }
+        }
+
+        private void btn_Click(object sender, EventArgs e)
+        {Button btn = (Button)sender;
+            if (canttry == 0) { 
+            isBothSame = 0;
+            
+            if (num % 2 == 0) { btn.Image = pic[int.Parse(btn.Text)]; compare[num] = str[int.Parse(btn.Text)]; first = int.Parse(btn.Text); num++; return; }
+                if (num % 2 == 1)
+                {
+                    btn.Image = pic[int.Parse(btn.Text)];
+                    compare[num] = str[int.Parse(btn.Text)];
+                    if (compare[num] == compare[num - 1]&& int.Parse(btn.Text) != first)
+                    {
+                        btn.Enabled = false; btns[first].Enabled = false; isBothSame++;
+                        if (num == 15)
+                        {
+                            MessageBox.Show("你贏了!", a, MessageBoxButtons.OK, MessageBoxIcon.None);
+                        }
+                        num++;
+                    }
+                    else if (int.Parse(btn.Text) == first) { }
+                    else { canttry = 1; }
+                }
+            }
+            if (isBothSame == 0 && int.Parse(btn.Text) != first) { keep.Enabled = true; }
+        }
+        private void leave_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+        private Image[] RandomProduce()//產生隨機圖片至picran[]
+        {
+            Random rand = new Random(Guid.NewGuid().GetHashCode());
+            Image[] picran = new Image[16];
+            List<int> listLinq = new List<int>(Enumerable.Range(0, 16));
+            listLinq = listLinq.OrderBy(num => rand.Next()).ToList<int>();
+
+            picran[listLinq[0]] = Image.FromFile(@"images\01.jpg"); picran[listLinq[8]] = Image.FromFile(@"images\05.jpg");
+            picran[listLinq[1]] = Image.FromFile(@"images\01.jpg"); picran[listLinq[9]] = Image.FromFile(@"images\05.jpg");
+            picran[listLinq[2]] = Image.FromFile(@"images\02.jpg"); picran[listLinq[10]] = Image.FromFile(@"images\06.jpg");
+            picran[listLinq[3]] = Image.FromFile(@"images\02.jpg"); picran[listLinq[11]] = Image.FromFile(@"images\06.jpg");
+            picran[listLinq[4]] = Image.FromFile(@"images\03.jpg"); picran[listLinq[12]] = Image.FromFile(@"images\07.jpg");
+            picran[listLinq[5]] = Image.FromFile(@"images\03.jpg"); picran[listLinq[13]] = Image.FromFile(@"images\07.jpg");
+            picran[listLinq[6]] = Image.FromFile(@"images\04.jpg"); picran[listLinq[14]] = Image.FromFile(@"images\08.jpg");
+            picran[listLinq[7]] = Image.FromFile(@"images\04.jpg"); picran[listLinq[15]] = Image.FromFile(@"images\08.jpg");
+            str[listLinq[0]] = "images\01.jpg"; str[listLinq[8]] = "images\05.jpg";
+            str[listLinq[1]] = "images\01.jpg"; str[listLinq[9]] = "images\05.jpg";
+            str[listLinq[2]] = "images\02.jpg"; str[listLinq[10]] = "images\06.jpg";
+            str[listLinq[3]] = "images\02.jpg"; str[listLinq[11]] = "images\06.jpg";
+            str[listLinq[4]] = "images\03.jpg"; str[listLinq[12]] = "images\07.jpg";
+            str[listLinq[5]] = "images\03.jpg"; str[listLinq[13]] = "images\07.jpg";
+            str[listLinq[6]] = "images\04.jpg"; str[listLinq[14]] = "images\08.jpg";
+            str[listLinq[7]] = "images\04.jpg"; str[listLinq[15]] = "images\08.jpg";
+            return picran;
+        }
+
+        private void keep_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < 16; i++)
+            {
+                if (btns[i].Enabled == true && btns[i].Image != Image.FromFile(@"images\card.jpg")) { btns[i].Image = Image.FromFile(@"images\card.jpg"); }
+            }
+            num--;
+            canttry = 0;            keep.Enabled = false;
+        }
+    }
+}
+
+作業4-2
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Hw4_2
+{
+    public partial class Form1 : Form
+    { int num = 0, isBothSame = 0, first = 0, canttry = 0;
+        public Button[] btns = new Button[16];
+        Image[] pic = new Image[16]; //已打亂的圖片array
+        string[] str = new string[16];
+        string[] compare = new string[16];
+        int scorefinal = 100;
+        string user = "";
+        public Form1()
+        {
+            InitializeComponent();
+            this.tabControl1.TabPages[0].Text = "遊玩區";
+            this.tabControl1.TabPages[1].Text = "歷史紀錄區";
+            score.Text += scorefinal;
+        }
+        
+        private void start_Click(object sender, EventArgs e)
+        {
+            num = 0;
+            flowLayoutPanel1.Visible = false;
+            scorefinal = 100;
+            user = name.Text;
+            if (user == "" || user == "   " || user == "    " || user == "     " || user == "      " || user == "       " || user == "        " || user == "         " || user == "          ") { MessageBox.Show("名稱不能為空白", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Hand); }
+            else if (user.Length < 3 || user.Length > 10) { MessageBox.Show("名稱不符合格式(>=3&&<=10)", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Hand); }
+            else
+            {
+                for (int i = 0; i < 16; i++) { compare[i] = ""; }
+                start.Enabled = false;
+                keep.Enabled = false;
+                pic = RandomProduce();
+                for(int i = 0; i < 16; i++)
+                {
+                    flowLayoutPanel1.Controls.Remove(btns[i]);
+                }
+                for (int y = 0; y < 4; ++y)
+                {
+                    for (int x = 0; x < 4; ++x)
+                    {
+                        int idx = x + y * 4;
+                        btns[idx] = new Button();
+                        btns[idx].Image = Image.FromFile(@"images\card.jpg");
+                        btns[idx].SetBounds(y * 50, x * 10, 75, 100);
+                        btns[idx].Enabled = true;
+                        btns[idx].Font = new Font("標楷體", 1);
+                        btns[idx].Text = idx.ToString();
+                        flowLayoutPanel1.Controls.Add(btns[idx]);
+                        btns[idx].Click += btn_Click;
+                    }
+                }
+                flowLayoutPanel1.Visible = true;
+            }
+        }
+        private void btn_Click(object sender, EventArgs e)
+        {Button btn = (Button)sender;
+            if (canttry == 0)
+            {
+                isBothSame = 0;
+                
+                if (num % 2 == 0) { btn.Image = pic[int.Parse(btn.Text)]; compare[num] = str[int.Parse(btn.Text)]; first = int.Parse(btn.Text); num++; return; }
+                if (num % 2 == 1)
+                {
+                    btn.Image = pic[int.Parse(btn.Text)];
+                    compare[num] = str[int.Parse(btn.Text)];
+                    if (compare[num] == compare[num - 1]&& int.Parse(btn.Text) != first)
+                    {
+                        scorefinal += 10;
+                        score.Text = "分數:" + scorefinal;
+                        btn.Enabled = false; btns[first].Enabled = false; isBothSame++;
+                        if (num == 15)
+                        {
+                            richTextBox1.Text += user + "得分為:" + scorefinal+"\n"+"\n";
+                            DialogResult ans;
+                            ans = MessageBox.Show("分數:" + scorefinal, "遊戲結束", MessageBoxButtons.RetryCancel, MessageBoxIcon.Asterisk);
+                            if (ans == DialogResult.Retry)
+                            {
+                                flowLayoutPanel1.Visible = false;
+                                pic = RandomProduce();
+                                score.Text = "分數:100";
+                                name.Text = "";
+                                start.Enabled = true;
+                            }
+                        }
+                        num++;
+                    }
+                    else if(int.Parse(btn.Text) == first) { }
+                    else { canttry = 1; scorefinal -= 5; score.Text = "分數:" + scorefinal; }
+                }
+            }
+            if (isBothSame == 0&& int.Parse(btn.Text) != first) { keep.Enabled = true; }
+        }
+       
+
+        private void restart_Click(object sender, EventArgs e)
+        {
+            flowLayoutPanel1.Visible = false;
+            pic = RandomProduce();
+            score.Text = "分數:100";
+            name.Text = "";
+            start.Enabled = true;
+        }
+
+        private void end_Click(object sender, EventArgs e)
+        {
+            DialogResult result;
+            result=MessageBox.Show("確定要離開遊戲嗎?", "離開遊戲", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
+            if (result == DialogResult.OK) { this.Close(); }
+        }
+
+        private void keep_Click(object sender, EventArgs e)
+        {
+           
+            for (int i = 0; i < 16; i++)
+            {
+                if (btns[i].Enabled == true && btns[i].Image != Image.FromFile(@"images\card.jpg")) { btns[i].Image = Image.FromFile(@"images\card.jpg"); }
+            }
+            num--;
+            canttry = 0;
+            keep.Enabled = false;
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+        private Image[] RandomProduce()//產生隨機圖片至picran[]
+        {
+            Random rand = new Random(Guid.NewGuid().GetHashCode());
+            Image[] picran = new Image[16];
+            List<int> listLinq = new List<int>(Enumerable.Range(0, 16));
+            listLinq = listLinq.OrderBy(num => rand.Next()).ToList<int>();
+
+            picran[listLinq[0]] = Image.FromFile(@"images\01.jpg"); picran[listLinq[8]] = Image.FromFile(@"images\05.jpg");
+            picran[listLinq[1]] = Image.FromFile(@"images\01.jpg"); picran[listLinq[9]] = Image.FromFile(@"images\05.jpg");
+            picran[listLinq[2]] = Image.FromFile(@"images\02.jpg"); picran[listLinq[10]] = Image.FromFile(@"images\06.jpg");
+            picran[listLinq[3]] = Image.FromFile(@"images\02.jpg"); picran[listLinq[11]] = Image.FromFile(@"images\06.jpg");
+            picran[listLinq[4]] = Image.FromFile(@"images\03.jpg"); picran[listLinq[12]] = Image.FromFile(@"images\07.jpg");
+            picran[listLinq[5]] = Image.FromFile(@"images\03.jpg"); picran[listLinq[13]] = Image.FromFile(@"images\07.jpg");
+            picran[listLinq[6]] = Image.FromFile(@"images\04.jpg"); picran[listLinq[14]] = Image.FromFile(@"images\08.jpg");
+            picran[listLinq[7]] = Image.FromFile(@"images\04.jpg"); picran[listLinq[15]] = Image.FromFile(@"images\08.jpg");
+            str[listLinq[0]] = "images\01.jpg"; str[listLinq[8]] = "images\05.jpg";
+            str[listLinq[1]] = "images\01.jpg"; str[listLinq[9]] = "images\05.jpg";
+            str[listLinq[2]] = "images\02.jpg"; str[listLinq[10]] = "images\06.jpg";
+            str[listLinq[3]] = "images\02.jpg"; str[listLinq[11]] = "images\06.jpg";
+            str[listLinq[4]] = "images\03.jpg"; str[listLinq[12]] = "images\07.jpg";
+            str[listLinq[5]] = "images\03.jpg"; str[listLinq[13]] = "images\07.jpg";
+            str[listLinq[6]] = "images\04.jpg"; str[listLinq[14]] = "images\08.jpg";
+            str[listLinq[7]] = "images\04.jpg"; str[listLinq[15]] = "images\08.jpg";
+            return picran;
+        }
+
+    }
+}

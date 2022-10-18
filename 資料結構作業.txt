@@ -1,0 +1,73 @@
+HW1:SPARSE MATRIX
+
+#include <stdio.h>
+class SparseMatrix;
+class SparseMatrix {
+	int Rows, Cols, Terms;
+	MatrixTerm smArray[MaxTerms]; //smArray,type為 MatrixTerm，內存:row,col,value
+}
+class MatrixTerm{ //MatrixTerm為 一個class 
+friend	class SparseMatrix
+	int row,col,value;
+};
+int main()
+{   int m,n;
+	ifstream input;
+	input.open("p1.in");
+	input>>m>>n;
+	int array[m][n];
+	fill(&array[0][0],&array[0][0]+sizeof(array)/sizeof(array[0][0]),0);
+	
+	outstream output;
+	output.stream("p1.out");
+	
+	SparseMatrix a;
+	a.rows=m;
+	a.column=n;
+	a.smArray=new MatrixTerm[m*n];
+	int num=0;
+	while(!input.eof()){
+		int row,column,value;
+		input>>row>>column>>value;
+		array[row][column]=value;//第一種方法 
+		
+		a.smArray[num].row=row;  //第二種方法 
+		a.smArray[num].column=column;
+		a.smArray[num].value=value;
+		num++;
+	}
+	a.terms=num;
+	
+	int method1[m][n];
+	for (i = 0; i < m; i++ )
+   for (j = 0; j < n; j++ )
+  method1[j][i] = a[i][j];
+  
+  a.Transpose();
+  
+  for(int i=0;i<)
+}
+
+SparseMatrix SparseMatrix::Transpose()
+// return the transpose of a (*this)
+{
+	SparseMatrix b;
+	b.Rows = Cols;	// rows in b = columns in a
+	b.Cols = Rows;	// columns in b = rows in a
+	b.Terms = Terms;	// terms in b = terms in a
+	if (Terms > 0) 	// nonzero matrix
+	{
+		int CurrentB = 0;
+		for (int c = 0; c < Cols; c++) // transpose by columns
+		    for (int i = 0; i < Terms; i++) 
+		      // find elements in column c
+			if (smArray[i].col == c) {
+			   b.smArray[CurrentB].row = c;
+			   b.smArray[CurrentB].col = smArray[i].row;
+			   b.smArray[CurrentB].value = smArray[i].value;
+			   CurrentB++;
+			} 
+	}  // end of if (Terms > 0)
+   return b;
+}  // end of transpose
+
